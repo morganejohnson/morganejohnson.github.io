@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About | Morgan Johnson</title>
+  <meta name="description" content="Morgan Johnson is a journalism and advertising and public relations major at the University of Nebraska-Lincoln, student leader, and communicator.">
+  <style>
+:root {
+  --bg: #ffffff;
+  --surface: #f7f5f2;
+  --text: #1c1c1e;
+  --muted: #5f5f66;
+  --accent: #b3102a;
+  --ink: #1d2433;
+  --on-ink: #f4f1ec;
+  --border: #e4e0da;
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161b;
+    --surface: #1c1f26;
+    --text: #eceae6;
+    --muted: #a5a7b0;
+    --accent: #ff7c8f;
+    --ink: #0e1015;
+    --on-ink: #eceae6;
+    --border: #2d313b;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.bar { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+.brand { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; color: var(--text); text-decoration: none; }
+nav a { margin-left: 24px; color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500; }
+nav a:hover { color: var(--accent); }
+
+/* Hero */
+.hero { background: var(--surface); border-bottom: 1px solid var(--border); padding: 80px 0; }
+.hero-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: center; }
+.eyebrow { margin: 0 0 12px; color: var(--accent); font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+h1 { font-family: var(--serif); font-size: clamp(2.6rem, 7vw, 4rem); line-height: 1.05; margin: 0 0 20px; font-weight: 700; }
+.lead { font-size: 1.15rem; color: var(--muted); max-width: 34em; margin: 0 0 28px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
+
+.button {
+  display: inline-block;
+  padding: 11px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  font-size: .92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.button:hover { opacity: .9; }
+.button.ghost { background: transparent; color: var(--text); border-color: var(--text); }
+.button.light { background: var(--on-ink); color: var(--ink); border-color: var(--on-ink); }
+
+.facts { background: var(--bg); border: 1px solid var(--border); border-top: 4px solid var(--accent); padding: 8px 24px; }
+.facts dl { margin: 0; }
+.facts div { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.facts div:last-child { border-bottom: 0; }
+.facts dt { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 2px 0 0; font-family: var(--serif); font-size: 1.05rem; }
+
+/* Sections */
+section.wrap { padding-top: 72px; padding-bottom: 8px; }
+h2 { font-family: var(--serif); font-size: 1.8rem; margin: 0 0 28px; }
+h2::after { content: ""; display: block; width: 48px; height: 3px; background: var(--accent); margin-top: 10px; }
+h3 { font-family: var(--serif); font-size: 1.2rem; margin: 0 0 4px; }
+
+.prose { max-width: 42em; }
+.prose p { margin: 0 0 1em; }
+
+/* Cards */
+.cards { display: grid; gap: 20px; }
+.card { border: 1px solid var(--border); border-left: 4px solid var(--accent); padding: 24px 28px; background: var(--bg); }
+.card h3 { margin-bottom: 12px; }
+.roles { list-style: none; padding: 0; margin: 0; }
+.roles li { padding: 12px 0; border-top: 1px solid var(--border); }
+.roles li:first-child { border-top: 0; padding-top: 0; }
+.roles p { margin: 0; color: var(--muted); }
+.roles .role { color: var(--text); font-weight: 600; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; }
+.roles .role span { color: var(--muted); font-weight: 400; font-size: .88rem; }
+
+/* Timeline */
+.timeline { list-style: none; margin: 0; padding: 0 0 0 28px; border-left: 2px solid var(--border); }
+.timeline > li { position: relative; padding-bottom: 36px; }
+.timeline > li::before {
+  content: "";
+  position: absolute;
+  left: -36px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg);
+  border: 3px solid var(--accent);
+  border-radius: 50%;
+}
+.meta { margin: 0; color: var(--accent); font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.org { margin: 0 0 10px; color: var(--muted); }
+.timeline ul { margin: 0; padding-left: 20px; }
+.timeline ul li { margin-bottom: 4px; }
+
+/* Skills */
+.skills { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+.skills li { background: var(--surface); padding: 20px; border-top: 3px solid var(--accent); }
+.skills strong { display: block; font-family: var(--serif); font-size: 1.05rem; margin-bottom: 4px; }
+.skills span { color: var(--muted); font-size: .92rem; }
+
+/* Contact */
+.contact { background: var(--ink); color: var(--on-ink); margin-top: 80px; padding: 72px 0; text-align: center; }
+.contact h2::after { margin-left: auto; margin-right: auto; }
+.contact p { max-width: 36em; margin: 0 auto 24px; color: rgba(244, 241, 236, .8); }
+
+footer { padding: 24px 0; text-align: center; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--border); }
+footer p { margin: 0; }
+
+/* Responsive */
+@media (max-width: 760px) {
+  .hero { padding: 48px 0; }
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .bar { height: auto; padding: 12px 24px; flex-direction: column; gap: 4px; }
+  nav a { margin: 0 8px; }
+  html { scroll-padding-top: 100px; }
+  section.wrap { padding-top: 48px; }
+}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="#top">Morgan Johnson</a>
+      <nav aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#involvement">Involvement</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Journalism &amp; Advertising/PR &middot; University of Nebraska-Lincoln</p>
+          <h1>Hi, I'm Morgan Johnson.</h1>
+          <p class="lead">I'm a journalism and advertising and public relations double major who loves building a message and getting it in front of the right people. I lead in student government and my sorority, and I'm always looking for the next story to tell.</p>
+          <p class="actions">
+            <a class="button" href="#contact">Get in touch</a>
+            <a class="button ghost" href="#experience">View experience</a>
+          </p>
+        </div>
+        <aside class="facts" aria-label="At a glance">
+          <dl>
+            <div><dt>Majors</dt><dd>Journalism; Advertising &amp; Public Relations</dd></div>
+            <div><dt>College</dt><dd>Journalism &amp; Mass Communications</dd></div>
+            <div><dt>Minor</dt><dd>English</dd></div>
+            <div><dt>Graduating</dt><dd>May 2028</dd></div>
+            <div><dt>Based in</dt><dd>Lincoln, Nebraska</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <section id="about" class="wrap">
+      <h2>About</h2>
+      <div class="prose">
+        <p>I'm a student at the University of Nebraska-Lincoln, double majoring in journalism and advertising and public relations in the College of Journalism and Mass Communications, with a minor in English. I'm drawn to strategic communication: understanding an audience, shaping a message, and choosing the right way to share it, whether that's a photo, a video, a social post, or a piece of legislation.</p>
+        <p>On campus, I represent my college in the student senate, lead the communications committee for the Association of Students of the University of Nebraska (ASUN), and serve as chapter president of Phi Mu. I've also worked in office administration since 2023 and mentored fellow students through my college. Together, those roles have taught me how to listen, stay organized, and follow through.</p>
+      </div>
+    </section>
+
+    <section id="involvement" class="wrap">
+      <h2>Leadership &amp; Involvement</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>ASUN Student Government</h3>
+          <ul class="roles">
+            <li>
+              <p class="role">Communications Chair <span>Nov 2025 &ndash; Present</span></p>
+              <p>The Speaker of the Senate appointed me to lead the communications committee. I run ASUN's social media and manage its media relations.</p>
+            </li>
+            <li>
+              <p class="role">CoJMC Senator <span>Spring 2024 &ndash; Present</span></p>
+              <p>Students in the College of Journalism and Mass Communications elected me to represent them in the student senate. I attend weekly meetings, write legislation, and serve on a standing committee.</p>
+            </li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Phi Mu Sorority</h3>
+          <ul class="roles">
+            <li>
+              <p class="role">Chapter President <span>Nov 2026 &ndash; Present</span></p>
+              <p>My chapter elected me to direct all operations and lead the executive committee. I serve as the liaison between our chapter and National Headquarters.</p>
+            </li>
+            <li>
+              <p class="role">Photography &amp; Assistant Sisterhood Chair <span>Began Apr 2025</span></p>
+              <p>I directed chapter photography, and filmed and edited our yearly sisterhood video to support a positive public image. I also met with members one-on-one to hear about their experience and helped plan and carry out sisterhood events.</p>
+            </li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Order of Omega</h3>
+          <ul class="roles">
+            <li>
+              <p class="role">Honors Society Member</p>
+              <p>Selected as a member of the 2025 inductee class.</p>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="wrap">
+      <h2>Experience</h2>
+      <ol class="timeline">
+        <li>
+          <p class="meta">Aug &ndash; Dec 2025</p>
+          <h3>Peer Mentor</h3>
+          <p class="org">UNL College of Journalism and Mass Communications</p>
+          <ul>
+            <li>Mentored younger students one-on-one on classes and major decisions.</li>
+            <li>Helped plan and direct a student panel where underclassmen could learn from their peers' experiences.</li>
+            <li>Assisted the class professor with weekly coursework and activities.</li>
+          </ul>
+        </li>
+        <li>
+          <p class="meta">May 2023 &ndash; Present</p>
+          <h3>Administrative Assistant</h3>
+          <p class="org">Hoodmasters Inc.</p>
+          <ul>
+            <li>Greet customers at the front desk and answer the company phone.</li>
+            <li>Help schedule and assign jobs to technicians.</li>
+            <li>Organize files and mail, digitally and physically, to keep company records current.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section id="skills" class="wrap">
+      <h2>Skills</h2>
+      <ul class="skills">
+        <li><strong>Communication</strong><span>Social media, media relations, photo and video</span></li>
+        <li><strong>Leadership</strong><span>Elected and appointed leadership roles</span></li>
+        <li><strong>Organization</strong><span>Scheduling, record keeping, event planning</span></li>
+        <li><strong>Collaboration</strong><span>Committees, executive teams, peer mentoring</span></li>
+      </ul>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="wrap">
+        <h2>Contact</h2>
+        <p>I'm interested in internships and opportunities in journalism, advertising, public relations, and communications. If you'd like to connect, I'd love to hear from you.</p>
+        <p><a class="button light" href="mailto:morganejohnson006@gmail.com">morganejohnson006@gmail.com</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>&copy; 2026 Morgan Johnson</p>
+    </div>
+  </footer>
+</body>
+</html>
