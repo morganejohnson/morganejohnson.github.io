@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNL Major Search | The Daily Nebraskan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:700|Open+Sans:400,600,700">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* Colors and fonts borrowed from dailynebraskan.com */
+:root {
+  --red: #ba1f1f;
+  --bg: #ffffff;
+  --panel: #f4f4f4;
+  --text: #222;
+  --muted: #515151;
+  --border: #c9c8cd;
+  --up: #1a7f37;
+  --down: #ba1f1f;
+  --head: "Roboto Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "Open Sans", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#16181c; --panel:#22252b; --text:#ececec; --muted:#a9acb3; --border:#3a3e46; --red:#e0493f; --up:#4cc26b; --down:#ff7b72; }
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:var(--body); font-size:15px; line-height:1.5; }
+.app { max-width: 860px; margin: 0 auto; padding: 16px; }
+h1 { font-family:var(--head); font-size:1.7rem; margin:0 0 4px; text-transform:uppercase; letter-spacing:.2px; border-top:4px solid var(--red); padding-top:10px; }
+.sub { margin:0 0 16px; color:var(--muted); font-size:.92rem; }
+
+.search { position:relative; }
+.search input {
+  width:100%; padding:12px 14px; font:inherit; font-size:1rem;
+  border:2px solid var(--border); border-radius:3px; background:var(--bg); color:var(--text);
+}
+.search input:focus { outline:none; border-color:var(--red); }
+.results {
+  position:absolute; z-index:5; left:0; right:0; top:100%; margin:2px 0 0; padding:0; list-style:none;
+  background:var(--bg); border:1px solid var(--border); border-radius:3px; max-height:320px; overflow:auto;
+  box-shadow:0 6px 16px rgba(0,0,0,.18);
+}
+.results li { padding:9px 14px; cursor:pointer; display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--panel); }
+.results li:last-child { border-bottom:0; }
+.results li[aria-selected="true"], .results li:hover { background:var(--panel); }
+.results .cnt { color:var(--muted); font-size:.82rem; white-space:nowrap; }
+.results .none { cursor:default; color:var(--muted); }
+mark { background:none; color:var(--red); font-weight:700; }
+
+.chips { margin:12px 0 4px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.chips span.lbl { font-family:var(--head); text-transform:uppercase; font-size:.8rem; color:var(--muted); margin-right:2px; }
+.chip { font:inherit; font-size:.82rem; padding:4px 10px; border:1px solid var(--border); border-radius:999px; background:var(--panel); color:var(--text); cursor:pointer; }
+.chip:hover, .chip:focus-visible { border-color:var(--red); color:var(--red); }
+
+.card { margin-top:18px; border:1px solid var(--border); border-top:4px solid var(--red); border-radius:3px; padding:16px; background:var(--bg); }
+.card h2 { font-family:var(--head); text-transform:uppercase; font-size:1.45rem; margin:0; line-height:1.15; }
+.stats { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; }
+.stat { flex:1 1 140px; background:var(--panel); padding:10px 12px; border-radius:3px; }
+.stat b { display:block; font-family:var(--head); font-size:1.6rem; line-height:1.1; }
+.stat small { color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.4px; }
+.up { color:var(--up); } .down { color:var(--down); }
+
+.controls { display:flex; gap:6px; margin:8px 0; flex-wrap:wrap; }
+.seg { font:inherit; font-size:.85rem; font-weight:600; padding:6px 12px; border:1px solid var(--border); background:var(--bg); color:var(--text); cursor:pointer; border-radius:3px; }
+.seg[aria-pressed="true"] { background:var(--red); border-color:var(--red); color:#fff; }
+.chartbox { position:relative; height:320px; }
+.note { color:var(--muted); font-size:.8rem; margin:8px 0 0; }
+
+table { width:100%; border-collapse:collapse; margin-top:14px; font-size:.84rem; }
+.tablewrap { overflow-x:auto; }
+th, td { padding:5px 7px; text-align:right; border-bottom:1px solid var(--panel); white-space:nowrap; }
+th:first-child, td:first-child { text-align:left; white-space:normal; min-width:150px; }
+th { font-family:var(--head); text-transform:uppercase; font-size:.78rem; color:var(--muted); }
+tr.total td { font-weight:700; border-top:2px solid var(--border); }
+.empty { text-align:center; color:var(--muted); padding:30px 10px; }
+footer { margin-top:20px; font-size:.75rem; color:var(--muted); border-top:1px solid var(--border); padding-top:8px; }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+@media (max-width:520px) { .chartbox { height:260px; } h1 { font-size:1.4rem; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>Find a UNL major</h1>
+  <p class="sub">Search any major to see how many students have been enrolled each fall, 2016&ndash;2025.</p>
+
+  <div class="search">
+    <label class="sr" for="q">Search for a major</label>
+    <input id="q" type="search" placeholder="Try &ldquo;journalism,&rdquo; &ldquo;nursing&rdquo; or &ldquo;computer science&rdquo;" autocomplete="off"
+           role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+    <ul id="results" class="results" role="listbox" hidden></ul>
+  </div>
+  <div class="chips" id="chips"><span class="lbl">Largest majors:</span></div>
+
+  <div id="out"><div class="empty">Start typing above to find a major.</div></div>
+
+  <footer>Source: University of Nebraska&ndash;Lincoln enrollment records (Fall 2016&ndash;Fall 2025), obtained by The Daily Nebraskan. Counts combine every college and degree level listed under a major name.</footer>
+</div>
+
+<script>
+(function () {
+  var D, YEARS, byName = {}, chart = null, current = null, mode = 'total';
+  var $ = function (id) { return document.getElementById(id); };
+  var q = $('q'), list = $('results'), out = $('out');
+  var active = -1, shown = [];
+
+  var SMALL = /^(of|and|in|for|the|to|a|an|ed|educ)$/i;
+  function pretty(s) {
+    return s.toLowerCase().replace(/\b[\w']+\b/g, function (w, i) {
+      if (/^(ii|iii|iv|cfa|it|us|u|s|ncta|unk|unmc|uno|unl|casnr|ehs|anr|jmc|cyaf|hrtm|tmfd|thea|nutr|rn|hr|ap|iep|ev|n2v|rna)$/i.test(w) && w.length > 1) return w.toUpperCase();
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    }).replace(/\bBs\b|\bBa\b/g, function (m) { return m.toUpperCase(); });
+  }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function fmt(n) { return n == null ? '—' : n.toLocaleString(); }
+  function last(arr) { for (var i = arr.length - 1; i >= 0; i--) if (arr[i] != null) return i; return -1; }
+  function first(arr) { for (var i = 0; i < arr.length; i++) if (arr[i] != null) return i; return -1; }
+
+  fetch('data.json').then(function (r) { return r.json(); }).then(function (d) {
+    D = d; YEARS = d.years;
+    D.majors.forEach(function (m) { m.label = pretty(m.n); m.key = m.n.toLowerCase(); byName[m.n] = m; m.latest = m.t[m.t.length - 1] || 0; });
+    // chips: largest majors in the latest year
+    D.majors.slice().sort(function (a, b) { return b.latest - a.latest; }).slice(0, 8).forEach(function (m) {
+      var b = document.createElement('button'); b.className = 'chip'; b.textContent = m.label;
+      b.onclick = function () { choose(m); };
+      $('chips').appendChild(b);
+    });
+    var p = new URLSearchParams(location.search).get('major');
+    if (p && byName[p.toUpperCase()]) choose(byName[p.toUpperCase()]);
+    resize();
+  }).catch(function () { out.innerHTML = '<div class="empty">Sorry, the data could not be loaded.</div>'; });
+
+  function search(term) {
+    var toks = term.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!toks.length) return [];
+    return D.majors.filter(function (m) { return toks.every(function (t) { return m.key.indexOf(t) > -1; }); })
+      .sort(function (a, b) {
+        var as = a.key.indexOf(toks[0]) === 0 ? 0 : 1, bs = b.key.indexOf(toks[0]) === 0 ? 0 : 1;
+        return as - bs || b.latest - a.latest || a.key.localeCompare(b.key);
+      }).slice(0, 30);
+  }
+  function hl(label, term) {
+    var toks = term.toLowerCase().split(/\s+/).filter(Boolean), s = esc(label);
+    toks.forEach(function (t) { s = s.replace(new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>'); });
+    return s;
+  }
+  function render(term) {
+    if (!D) return;
+    shown = search(term); active = -1;
+    if (!term.trim()) { list.hidden = true; q.setAttribute('aria-expanded', 'false'); return; }
+    list.innerHTML = shown.length ? shown.map(function (m, i) {
+      var l = last(m.t);
+      return '<li role="option" id="opt' + i + '" data-i="' + i + '"><span>' + hl(m.label, term) + '</span><span class="cnt">' +
+        (m.t[9] != null ? fmt(m.t[9]) + ' in 2025' : 'last listed ' + YEARS[l]) + '</span></li>';
+    }).join('') : '<li class="none">No majors match &ldquo;' + esc(term) + '&rdquo;. Try a shorter word.</li>';
+    list.hidden = false; q.setAttribute('aria-expanded', 'true');
+  }
+  q.addEventListener('input', function () { render(q.value); });
+  q.addEventListener('focus', function () { if (q.value) render(q.value); });
+  list.addEventListener('mousedown', function (e) {
+    var li = e.target.closest('li[data-i]'); if (li) { e.preventDefault(); choose(shown[+li.dataset.i]); }
+  });
+  q.addEventListener('keydown', function (e) {
+    if (list.hidden) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); if (!shown.length) return;
+      active = (active + (e.key === 'ArrowDown' ? 1 : -1) + shown.length) % shown.length;
+      [].forEach.call(list.children, function (li, i) { li.setAttribute('aria-selected', i === active); });
+      q.setAttribute('aria-activedescendant', 'opt' + active);
+      list.children[active].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      e.preventDefault(); var m = shown[active >= 0 ? active : 0]; if (m) choose(m);
+    } else if (e.key === 'Escape') { list.hidden = true; q.setAttribute('aria-expanded', 'false'); }
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.search')) list.hidden = true; });
+
+  function choose(m) {
+    current = m; mode = 'total'; q.value = m.label; list.hidden = true; q.setAttribute('aria-expanded', 'false');
+    show();
+  }
+
+  function show() {
+    var m = current, t = m.t, f = first(t), l = last(t);
+    var peakV = -1, peakI = 0; t.forEach(function (v, i) { if (v != null && v > peakV) { peakV = v; peakI = i; } });
+    var chg = (f !== l && t[f] > 0) ? (t[l] - t[f]) / t[f] * 100 : null;
+    var h = '<div class="card"><h2>' + esc(m.label) + '</h2>';
+    h += '<div class="stats">' +
+      '<div class="stat"><small>Fall ' + YEARS[l] + '</small><b>' + fmt(t[l]) + '</b><small>students' + (l < YEARS.length - 1 ? ' (last year listed)' : '') + '</small></div>';
+    if (chg != null) h += '<div class="stat"><small>Change since ' + YEARS[f] + '</small><b class="' + (chg >= 0 ? 'up' : 'down') + '">' + (chg >= 0 ? '+' : '') + chg.toFixed(0) + '%</b><small>' + fmt(t[f]) + ' &rarr; ' + fmt(t[l]) + '</small></div>';
+    h += '<div class="stat"><small>Peak</small><b>' + fmt(peakV) + '</b><small>Fall ' + YEARS[peakI] + '</small></div></div>';
+    h += '<div class="controls" role="group" aria-label="Chart view"><button class="seg" data-m="total" aria-pressed="true">All students combined</button>' +
+         (m.p.length > 1 ? '<button class="seg" data-m="prog" aria-pressed="false">By college &amp; degree</button>' : '') + '</div>';
+    h += '<div class="chartbox"><canvas id="cv" role="img" aria-label="Line chart of ' + esc(m.label) + ' enrollment by fall semester"></canvas></div>';
+    var gaps = t.some(function (v, i) { return v == null && i > f && i < l; });
+    h += '<p class="note">' + (f > 0 || l < YEARS.length - 1 ? 'This major name appears only in Fall ' + YEARS[f] + (f !== l ? '–' + YEARS[l] : '') + ' records &mdash; it may have been added, ended, renamed or merged. ' : '') + (gaps ? 'Gaps mean the major was not listed that fall. ' : '') + 'Programs are matched by the exact name in the university’s files.</p>';
+    h += '<div class="tablewrap" id="tbl"></div></div>';
+    out.innerHTML = h;
+    out.querySelectorAll('.seg').forEach(function (b) {
+      b.onclick = function () { mode = b.dataset.m; out.querySelectorAll('.seg').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); draw(); };
+    });
+    draw(); resize();
+  }
+
+  var PAL = ['#ba1f1f', '#2f6db5', '#e0a100', '#2a8a5b', '#7a4fb0', '#d9602b', '#5b6770', '#c2457a', '#1a9aa6', '#8a6d3b'];
+  function draw() {
+    var m = current, ds;
+    var dark = matchMedia('(prefers-color-scheme: dark)').matches, grid = dark ? '#3a3e46' : '#e3e3e6', tick = dark ? '#a9acb3' : '#515151';
+    if (mode === 'total') {
+      ds = [{ label: m.label, data: m.t, borderColor: PAL[0], backgroundColor: PAL[0] + '22', fill: true, borderWidth: 3, pointRadius: 4, pointHoverRadius: 6, tension: .15, spanGaps: false }];
+    } else {
+      ds = m.p.slice().sort(function (a, b) { return (b.v[last(b.v)] || 0) - (a.v[last(a.v)] || 0); }).map(function (p, i) {
+        return { label: p.c + (p.d ? ' (' + p.d + ')' : ''), data: p.v, borderColor: PAL[i % PAL.length], backgroundColor: PAL[i % PAL.length], borderWidth: 2.5, pointRadius: 3, tension: .15 };
+      });
+    }
+    if (chart) chart.destroy();
+    chart = new Chart($('cv'), {
+      type: 'line', data: { labels: YEARS.map(function (y) { return 'Fall ' + y; }), datasets: ds },
+      options: {
+        responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: mode !== 'total', position: 'bottom', labels: { color: tick, boxWidth: 12, font: { family: 'Open Sans', size: 11 } } },
+          tooltip: { callbacks: { label: function (c) { return ' ' + c.dataset.label + ': ' + (c.parsed.y == null ? 'not listed' : c.parsed.y.toLocaleString()); } } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: grid }, ticks: { color: tick, precision: 0 }, title: { display: true, text: 'Students', color: tick } },
+          x: { grid: { display: false }, ticks: { color: tick, maxRotation: 45, autoSkip: false, font: { size: 11 } } }
+        }
+      }
+    });
+    // data table
+    var rows = '<table><thead><tr><th>' + (mode === 'total' ? 'Major' : 'College / degree') + '</th>' + YEARS.map(function (y) { return '<th>' + y + '</th>'; }).join('') + '</tr></thead><tbody>';
+    if (mode === 'total') rows += '<tr><td>All students combined</td>' + m.t.map(function (v) { return '<td>' + fmt(v) + '</td>'; }).join('') + '</tr>';
+    else {
+      m.p.forEach(function (p) { rows += '<tr><td>' + esc(p.c) + (p.d ? ' (' + esc(p.d) + ')' : '') + '</td>' + p.v.map(function (v) { return '<td>' + fmt(v) + '</td>'; }).join('') + '</tr>'; });
+      rows += '<tr class="total"><td>Total</td>' + m.t.map(function (v) { return '<td>' + fmt(v) + '</td>'; }).join('') + '</tr>';
+    }
+    $('tbl').innerHTML = rows + '</tbody></table>';
+    resize();
+  }
+
+  // Tell a parent page (the CMS) how tall to make the iframe
+  function resize() {
+    try { parent.postMessage({ type: 'dn-major-search-height', height: document.documentElement.scrollHeight + 340 }, '*'); } catch (e) {}
+  }
+  window.addEventListener('resize', resize);
+})();
+</script>
+</body>
+</html>
