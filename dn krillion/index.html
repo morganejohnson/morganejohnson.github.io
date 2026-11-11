@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nebraska Outlier | The Daily Nebraskan</title>
+  <meta name="description" content="Think you know Nebraska? Think again. A daily trivia game where the most unusual right answer wins.">
+  <meta name="theme-color" content="#a3121c">
+  <meta property="og:title" content="Nebraska Outlier">
+  <meta property="og:description" content="Think you know Nebraska? Think again. Seven prompts, twenty seconds each — the rarer your answer, the more you score.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23a3121c'/%3E%3Cpath d='M8 20h30c4 1 8 2 11 5 2 3 3 7 4 11 1 4 2 7 3 10v4H20v-9H8z' fill='%23f7f0e1'/%3E%3Ccircle cx='54' cy='14' r='5' fill='%23e3ad2c'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Bungee&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Reusable icons -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="ne-shape" viewBox="0 0 120 58">
+        <path d="M2 4H75C82 6 90 6 96 10C100 12 102 12 103 13C105 16 106 20 107 24C108 28 110 31 109.5 33C111 38 114 42 115 46C116 50 118 52 118 54H29V37H2Z"/>
+      </symbol>
+      <symbol id="ic-common" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2.5c2.4 0 3.8 3.2 3.8 7.6S14.4 19 12 19s-3.8-4.5-3.8-8.9S9.6 2.5 12 2.5z"/>
+        <path d="M8.6 7.5h6.8M8.3 10.5h7.4M8.6 13.5h6.8M12 3v15.5"/>
+        <path d="M8.4 12.5C5 13.6 4 17 4 21.5c2.6-1.2 5.4-2.4 8-2.2M15.6 12.5c3.4 1.1 4.4 4.5 4.4 9-2.6-1.2-5.4-2.4-8-2.2"/>
+      </symbol>
+      <symbol id="ic-familiar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 21.5V8.5L8.5 4 12 8.5v13"/>
+        <path d="M12 21.5V11h3.5v10.5M15.5 21.5V13H19v8.5"/>
+        <path d="M2.5 21.5h19M7.2 11.5h2.6M7.2 15h2.6"/>
+      </symbol>
+      <symbol id="ic-unusual" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17.5 4.2l3.3 1.3-3.2.4"/>
+        <path d="M17.6 5.8c-.6 2.6-1.4 4.4-3 5.6"/>
+        <path d="M14.6 11.4c-2.7-.9-6.5-.4-9.6 2.4 2.6.7 5.6.9 8.2 0 1.3-.5 1.8-1.3 1.4-2.4z"/>
+        <path d="M10 14.4l-1.2 7.1M11.6 14.2l.9 7.3"/>
+        <circle cx="17.3" cy="4" r=".9" fill="currentColor" stroke="none"/>
+      </symbol>
+      <symbol id="ic-rare" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2.5 21.5h19"/>
+        <path d="M4 21.5c2.2-4.6 4.6-7.2 7-7.4 2.6.2 5.6 2.8 9 7.4"/>
+        <path d="M10.6 14.2V5.2c0-1.4 2.6-1.4 2.6 0v9"/>
+      </symbol>
+      <symbol id="ic-extreme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4.2" y="9.5" width="4.4" height="12" rx="1.2"/>
+        <rect x="15.4" y="9.5" width="4.4" height="12" rx="1.2"/>
+        <path d="M3 8.2V6.6c0-.8.6-1.4 1.4-1.4h2.2l1.6-2h7.6l1.6 2h2.2c.8 0 1.4.6 1.4 1.4v1.6z"/>
+        <path d="M2.5 21.5h19"/>
+      </symbol>
+      <symbol id="ic-miss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12.5" r="7.5"/>
+        <path d="M6.5 10c3 1 6.5-1.5 10 .5M6 14.5c4-.8 8 1.5 11.5-.5M9 6.5c-.5 4 1.5 8 .5 12.5M14.5 5.8c1 4-1.2 8.5.2 12.8"/>
+        <path d="M2 21.5h4M19 21.5h3"/>
+      </symbol>
+      <symbol id="ic-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7.5c0 .8.7 1.5 1.5 1.5h11c.8 0 1.5-.7 1.5-1.5V12"/>
+      </symbol>
+      <symbol id="ic-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v11M7.5 9.5L12 14l4.5-4.5"/><path d="M4 17v2.5c0 .8.7 1.5 1.5 1.5h13c.8 0 1.5-.7 1.5-1.5V17"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="app">
+    <header class="masthead">
+      <a class="masthead__pub" href="#" data-action="home" aria-label="Nebraska Outlier home">
+        <span class="masthead__dn">The Daily Nebraskan</span>
+        <span class="masthead__sep" aria-hidden="true">/</span>
+        <span class="masthead__games">Games</span>
+      </a>
+      <div class="masthead__right" id="masthead-right"></div>
+    </header>
+
+    <main id="main">
+      <!-- ============ HOME ============ -->
+      <section class="screen" id="screen-home" aria-labelledby="home-title">
+        <div class="hero">
+          <h1 class="wordmark" id="home-title" aria-label="Nebraska Outlier">
+            <span class="wordmark__mark" aria-hidden="true">
+              <svg viewBox="0 0 140 58"><use href="#ne-shape"/><path class="wordmark__star" d="M131 4l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/></svg>
+            </span>
+            <span class="wordmark__ne" aria-hidden="true">Nebraska</span>
+            <span class="wordmark__out" aria-hidden="true">Outlier</span>
+          </h1>
+          <p class="tagline">Think you know Nebraska? Think again.</p>
+          <p class="hero__date"><span id="home-date"></span></p>
+          <p class="hero__pitch">Seven prompts. Twenty seconds each. Any right answer scores, but the <strong>rarer</strong> your answer, the more points you get. Cornfields are easy. Can you think of Carhenge?</p>
+
+          <div class="hero__actions">
+            <button class="btn btn--primary btn--xl" id="btn-daily" data-action="daily">
+              <span class="btn__label" id="btn-daily-label">Play the Daily Challenge</span>
+              <span class="btn__sub" id="btn-daily-sub">Same 7 prompts for everyone today</span>
+            </button>
+            <button class="btn btn--ghost btn--xl" data-action="practice">
+              <span class="btn__label">Practice Mode</span>
+              <span class="btn__sub">Unlimited rounds, random prompts</span>
+            </button>
+          </div>
+
+          <div class="nickname">
+            <label for="nickname">Nickname <span class="muted">(optional, for your share card)</span></label>
+            <input id="nickname" type="text" maxlength="20" autocomplete="nickname" placeholder="e.g. Sandhills Sam">
+          </div>
+        </div>
+
+        <section class="panel stats-panel" aria-labelledby="stats-title">
+          <h2 id="stats-title" class="panel__title">Your scores <span class="panel__tag">saved on this device</span></h2>
+          <dl class="stats" id="home-stats"></dl>
+        </section>
+
+        <section class="panel" aria-labelledby="how-title">
+          <h2 id="how-title" class="panel__title">How to play</h2>
+          <ol class="how">
+            <li><span class="how__num">1</span><div><strong>Read the prompt.</strong> Something like "Name a Nebraska town that isn't Lincoln or Omaha."</div></li>
+            <li><span class="how__num">2</span><div><strong>Beat the clock.</strong> You have 20 seconds to type one answer. Lock it in early or it locks itself when time runs out.</div></li>
+            <li><span class="how__num">3</span><div><strong>Go niche.</strong> Every correct answer scores, but the obscure ones score the most. Kearney gets 10 points. Monowi, population 1, gets 100.</div></li>
+            <li><span class="how__num">4</span><div><strong>Share and come back tomorrow.</strong> The Daily Challenge resets at midnight Central. Practice Mode never runs out.</div></li>
+          </ol>
+        </section>
+
+        <section class="panel" aria-labelledby="rarity-title">
+          <h2 id="rarity-title" class="panel__title">The rarity scale</h2>
+          <ul class="scale" id="rarity-scale"></ul>
+          <p class="fineprint">Rarity levels are our editors' estimates of how often people would think of each answer, not measured statistics. Answers are checked against a set list. Spelling slips and plurals are fine, but answers that aren't on the list score 0.</p>
+        </section>
+      </section>
+
+      <!-- ============ GAME ============ -->
+      <section class="screen" id="screen-game" hidden aria-labelledby="prompt">
+        <div class="hud">
+          <div class="shield" aria-hidden="true">
+            <svg viewBox="0 0 64 68"><path class="shield__body" d="M32 66C15 60 4 48 4 26V10c9 0 18-3 28-8 10 5 19 8 28 8v16c0 22-11 34-28 40z"/><path class="shield__band" d="M4 10c9 0 18-3 28-8 10 5 19 8 28 8v8H4z"/><text x="32" y="15.5" class="shield__top">MILE</text><text x="32" y="48" class="shield__num" id="shield-num">1</text></svg>
+          </div>
+          <div class="hud__meta">
+            <p class="hud__progress" id="hud-progress">Question 1 of 7</p>
+            <p class="chip" id="hud-category">Husker Nation</p>
+          </div>
+          <div class="hud__score">
+            <span class="hud__score-label">Score</span>
+            <span class="hud__score-num" id="hud-score">0</span>
+          </div>
+        </div>
+
+        <ol class="dots" id="dots" aria-hidden="true"></ol>
+
+        <div class="timer" id="timer" role="timer" aria-label="Time remaining">
+          <div class="timer__track"><div class="timer__fill" id="timer-fill"></div></div>
+          <span class="timer__num" id="timer-num" aria-hidden="true">20</span>
+        </div>
+        <p class="sr-only" aria-live="polite" id="timer-announce"></p>
+
+        <h2 class="prompt" id="prompt" tabindex="-1">Prompt</h2>
+
+        <form class="answer" id="answer-form" autocomplete="off">
+          <label for="answer-input" class="sr-only">Your answer</label>
+          <input class="answer__input" id="answer-input" type="text" maxlength="80" placeholder="Type your answer…" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done">
+          <button class="btn btn--primary answer__btn" type="submit" id="lock-btn">Lock it in</button>
+        </form>
+
+        <div class="reveal" id="reveal" hidden aria-live="polite">
+          <div class="reveal__card" id="reveal-card">
+            <div class="reveal__badge"><svg><use id="reveal-icon" href="#ic-common"/></svg></div>
+            <div class="reveal__body">
+              <p class="reveal__tier"><span id="reveal-name">Cornstalk</span> <span class="reveal__label" id="reveal-label">Common</span></p>
+              <p class="reveal__answer" id="reveal-answer"></p>
+              <p class="reveal__msg" id="reveal-msg"></p>
+            </div>
+            <p class="reveal__points" id="reveal-points">+10</p>
+          </div>
+          <p class="reveal__hint" id="reveal-hint"></p>
+          <button class="btn btn--dark btn--wide" id="next-btn" data-action="next">Next question</button>
+        </div>
+
+        <div class="game-foot">
+          <button class="linkbtn" data-action="quit">Quit round</button>
+        </div>
+      </section>
+
+      <!-- ============ RESULTS ============ -->
+      <section class="screen" id="screen-results" hidden aria-labelledby="results-title">
+        <div class="results-hero">
+          <p class="results-hero__kicker" id="results-kicker">Daily Challenge</p>
+          <p class="results-hero__score"><span id="results-score">0</span><span class="results-hero__max">/700</span></p>
+          <h2 class="results-hero__title" id="results-title" tabindex="-1">Certified Cornhusker</h2>
+          <p class="results-hero__line" id="results-line"></p>
+          <div class="strip" id="results-strip" aria-hidden="true"></div>
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn--primary" data-action="share"><svg class="btn__icon"><use href="#ic-share"/></svg>Share your score</button>
+          <button class="btn btn--ghost" data-action="save-image"><svg class="btn__icon"><use href="#ic-image"/></svg>Save score image</button>
+        </div>
+
+        <p class="next-daily" id="next-daily" hidden></p>
+
+        <section class="panel best" id="best-panel" aria-labelledby="best-title">
+          <h3 class="panel__title" id="best-title">Your biggest outlier</h3>
+          <div class="best__card" id="best-card"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="breakdown-title">
+          <h3 class="panel__title" id="breakdown-title">Question by question</h3>
+          <ol class="breakdown" id="breakdown"></ol>
+        </section>
+
+        <section class="panel" aria-labelledby="cats-title">
+          <h3 class="panel__title" id="cats-title">By category</h3>
+          <ul class="catbars" id="catbars"></ul>
+        </section>
+
+        <div class="results-actions results-actions--bottom">
+          <button class="btn btn--dark" data-action="again" id="again-btn">Play again</button>
+          <button class="btn btn--ghost" data-action="home">Return to home</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__road" aria-hidden="true"></div>
+      <p>Nebraska Outlier is a game from <span id="footer-pub">The Daily Nebraskan</span>. Rarity scores are editorial estimates.</p>
+    </footer>
+  </div>
+
+  <dialog class="dialog" id="quit-dialog" aria-labelledby="quit-title">
+    <form method="dialog">
+      <h2 id="quit-title">Leave this round?</h2>
+      <p id="quit-text"></p>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" value="cancel">Keep playing</button>
+        <button class="btn btn--primary" value="quit">Leave</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/matcher.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

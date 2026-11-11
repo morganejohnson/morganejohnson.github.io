@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outlier Question Checker</title>
+  <style>
+    :root { --bg: #f7f0e1; --ink: #1d1a17; --ok: #2f6b3a; --bad: #a3121c; --warn: #8a6100; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { margin: 0 0 4px; font-size: 26px; }
+    .sum { font-size: 18px; font-weight: 700; margin: 16px 0; }
+    .ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+    ul { padding-left: 20px; } li { margin: 4px 0; overflow-wrap: anywhere; }
+    .try { background: #fffaf0; border: 2px solid var(--ink); border-radius: 12px; padding: 14px; margin-top: 24px; }
+    select, input, button { font: inherit; padding: 6px 10px; max-width: 100%; }
+    #tryOut { font-weight: 700; margin-top: 8px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Nebraska Outlier question checker</h1>
+  <p>Open this page after editing <code>js/questions.js</code>. It flags duplicate answers, empty tiers, broken "banned" lists and failed matcher tests.</p>
+  <div id="out">Running…</div>
+
+  <section class="try">
+    <h2 style="margin-top:0;font-size:18px">Try an answer</h2>
+    <select id="tryQ"></select>
+    <input id="tryA" placeholder="Type an answer" autocomplete="off">
+    <button id="tryBtn">Check</button>
+    <div id="tryOut"></div>
+  </section>
+</main>
+<script src="../js/config.js"></script>
+<script src="../js/questions.js"></script>
+<script src="../js/matcher.js"></script>
+<script src="checks.js"></script>
+<script>
+  var r = runOutlierChecks(window.NO_QUESTIONS, window.NO_TIERS, window.NO_CATEGORIES, window.NOMatcher);
+  function list(items, cls) { return "<ul class='" + cls + "'>" + items.map(function (x) { var d = document.createElement("div"); d.textContent = x; return "<li>" + d.innerHTML + "</li>"; }).join("") + "</ul>"; }
+  var html = "<p>" + r.questions + " questions, " + r.answers + " accepted answers.<br>By category: " + r.perCategory + "<br>Matcher tests: " + r.passed + " / " + r.tests + " passed.</p>";
+  html += r.errors.length ? "<p class='sum bad'>✗ " + r.errors.length + " problem(s) to fix:</p>" + list(r.errors, "bad") : "<p class='sum ok'>✓ No problems found.</p>";
+  if (r.warnings.length) html += "<p class='warn'><strong>Heads-up (" + r.warnings.length + "):</strong> these answers are spelled so similarly that a typo could land on either one. Usually fine; exact spellings always win.</p>" + list(r.warnings, "warn");
+  document.getElementById("out").innerHTML = html;
+
+  var sel = document.getElementById("tryQ");
+  window.NO_QUESTIONS.forEach(function (q, i) { var o = document.createElement("option"); o.value = i; o.textContent = q.prompt; sel.appendChild(o); });
+  function check() {
+    var q = window.NO_QUESTIONS[sel.value], m = window.NOMatcher.match(document.getElementById("tryA").value, q, window.NO_TIERS);
+    var out = document.getElementById("tryOut");
+    if (m.status === "match") out.textContent = "✓ " + m.entry.display + " (" + window.NO_TIERS[m.entry.tier].name + " / " + window.NO_TIERS[m.entry.tier].label + ", " + m.entry.points + " pts)" + (m.how === "typo" ? " via typo tolerance" : "");
+    else out.textContent = { banned: "Ruled out by the prompt (0 pts)", empty: "Empty answer", miss: "Not on the list (0 pts)" }[m.status];
+  }
+  document.getElementById("tryBtn").onclick = check;
+  document.getElementById("tryA").onkeydown = function (e) { if (e.key === "Enter") check(); };
+</script>
+</body>
+</html>
