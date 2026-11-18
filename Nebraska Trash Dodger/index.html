@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trash Talk | The Daily Nebraskan</title>
+  <meta name="description" content="Dodge the trash raining down from the Memorial Stadium student section in Trash Talk, a Blackout game from The Daily Nebraskan.">
+  <meta name="theme-color" content="#ba1f1f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&family=Orbitron:wght@700;900&family=Roboto+Condensed:wght@700;800&family=Roboto+Slab:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="dn-header">
+    <div class="dn-masthead wrap">
+      <a class="dn-wordmark" href="https://www.dailynebraskan.com/">
+        <span class="dn-wordmark__name">Daily Nebraskan</span>
+        <span class="dn-wordmark__tag">Student voice of the University of Nebraska&ndash;Lincoln since 1901</span>
+      </a>
+    </div>
+    <nav class="dn-nav" aria-label="Daily Nebraskan sections">
+      <div class="wrap dn-nav__inner">
+        <a href="https://www.dailynebraskan.com/news/">News</a>
+        <a href="https://www.dailynebraskan.com/sports/" aria-current="page">Sports</a>
+        <a href="https://www.dailynebraskan.com/culture/">Culture</a>
+        <a href="https://www.dailynebraskan.com/opinion/">Opinion</a>
+        <a href="https://www.dailynebraskan.com/multimedia/">Multimedia</a>
+        <a class="dn-nav__games" href="#game">Games</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="article-head">
+      <a class="kicker" href="#game">DN Games</a>
+      <h1 class="headline">Trash Talk: Survive the Blackout</h1>
+      <p class="dek">It&rsquo;s a blackout night at Memorial Stadium, the student section is restless, and the coach is standing right in the line of fire. Dodge everything they throw for as long as you can.</p>
+      <p class="byline">By <strong>Daily Nebraskan Games</strong></p>
+    </div>
+
+    <section class="game" id="game" aria-label="Trash Talk game">
+      <div class="stage" id="stage">
+        <canvas id="canvas" tabindex="0" aria-label="Memorial Stadium at night. Move the coach left and right to dodge trash thrown from the student section."></canvas>
+
+        <!-- title screen -->
+        <div class="overlay overlay--start" id="start">
+          <div class="title-card">
+            <p class="title-card__eyebrow">Blackout Edition</p>
+            <h2 class="title-card__title">Trash <span>Talk</span></h2>
+            <p class="title-card__text">Pizza boxes, water bottles, wrappers and shooters are coming down from the student section. Take three hits and the game is over.</p>
+            <p class="title-card__keys"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> to move &middot; <kbd>P</kbd> to pause</p>
+            <button class="btn btn--red" id="btn-start" type="button">Kick off</button>
+            <p class="title-card__best" id="best-line"></p>
+          </div>
+        </div>
+
+        <!-- pause -->
+        <div class="overlay overlay--pause" id="pause" hidden>
+          <div class="title-card title-card--small">
+            <h2 class="title-card__title">Timeout</h2>
+            <p class="title-card__text">The game is paused.</p>
+            <button class="btn btn--red" id="btn-resume" type="button">Resume</button>
+          </div>
+        </div>
+
+        <!-- game over: Memorial Stadium scoreboard -->
+        <div class="overlay overlay--over" id="over" hidden>
+          <div class="board" role="dialog" aria-labelledby="sb-final" aria-describedby="sb-msg">
+            <div class="board__crown">
+              <span class="board__n">N</span>
+              <span class="board__venue">Memorial Stadium</span>
+              <span class="board__n">N</span>
+            </div>
+
+            <div class="board__screen">
+              <p class="board__final" id="sb-final">FINAL</p>
+              <p class="board__msg" id="sb-msg">THE STUDENT SECTION WINS</p>
+              <div class="board__stats">
+                <div class="stat"><span class="stat__label">Time survived</span><span class="stat__val" id="sb-time">0:00</span></div>
+                <div class="stat"><span class="stat__label">Trash dodged</span><span class="stat__val" id="sb-dodged">0</span></div>
+                <div class="stat"><span class="stat__label">Best streak</span><span class="stat__val" id="sb-streak">0</span></div>
+                <div class="stat"><span class="stat__label">Your best</span><span class="stat__val" id="sb-best">0:00</span></div>
+              </div>
+            </div>
+
+            <div class="board__line">
+              <div class="team team--home">
+                <div class="team__name"><span class="team__logo team__logo--n">N</span>Huskers</div>
+                <div class="team__score" aria-label="Huskers 10">10</div>
+                <div class="team__sub">Nebraska &middot; T.O.L. <span class="dots"><i></i><i></i><i></i></span></div>
+              </div>
+              <div class="board__mid">
+                <div class="mid__cell"><span class="mid__label">QTR</span><span class="mid__val" id="sb-qtr">4</span></div>
+                <div class="mid__clock">0:00</div>
+                <div class="mid__cell"><span class="mid__label">Down</span><span class="mid__val">4</span><span class="mid__label">To go</span><span class="mid__val">20</span></div>
+              </div>
+              <div class="team team--away">
+                <div class="team__name">Huskies<span class="team__logo team__logo--w">W</span></div>
+                <div class="team__score" aria-label="Huskies 17">17</div>
+                <div class="team__sub">Washington &middot; T.O.L. <span class="dots"><i class="on"></i><i class="on"></i><i></i></span></div>
+              </div>
+            </div>
+
+            <button class="btn btn--red board__btn" id="btn-again" type="button">Run it back</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="touch" aria-hidden="false">
+        <button class="touch__btn" id="btn-left" type="button" aria-label="Move left">&#9664;</button>
+        <span class="touch__hint">Hold to move</span>
+        <button class="touch__btn" id="btn-right" type="button" aria-label="Move right">&#9654;</button>
+      </div>
+    </section>
+
+    <section class="howto">
+      <h2 class="section-label">How to play</h2>
+      <ul>
+        <li><strong>Move</strong> the coach with the <kbd>&larr;</kbd> and <kbd>&rarr;</kbd> arrow keys (or <kbd>A</kbd> / <kbd>D</kbd>). On a phone, hold the arrow buttons or press and hold on the field.</li>
+        <li><strong>Watch the shadows.</strong> A dark spot on the turf shows where each piece of trash will land.</li>
+        <li><strong>Three hits and you&rsquo;re done.</strong> Every hit costs one of your three timeouts.</li>
+        <li><strong>It gets worse.</strong> Each 30-second quarter is faster and better aimed than the last. Make it to overtime and you&rsquo;ll see why nobody survives it.</li>
+        <li>Coach&rsquo;s mood follows your footwork: he&rsquo;s happy after a close dodge, permanently yelling the rest of the time, and furious when he gets hit.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="dn-footer">
+    <div class="wrap">
+      <p><strong>Trash Talk</strong> is a game from The Daily Nebraskan. It is satire: please don&rsquo;t throw anything at anyone at Memorial Stadium.</p>
+      <p><a href="https://www.dailynebraskan.com/">dailynebraskan.com</a></p>
+    </div>
+  </footer>
+
+  <script src="js/scene.js"></script>
+  <script src="js/coach.js"></script>
+  <script src="js/trash.js"></script>
+  <script src="js/heckles.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
