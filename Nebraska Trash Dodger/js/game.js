@@ -578,8 +578,8 @@
     var pg = g.createRadialGradient(x, y + 20, 4, x, y + 30, 34);
     pg.addColorStop(0, '#34343c'); pg.addColorStop(1, '#111114');
     g.fillStyle = pg; g.fillRect(x - 30, y - 30, 60, 100);
-    g.translate(x, y + h / 2 + 9);
-    g.scale(1.3, 1.3);
+    g.translate(x, y + h / 2 + 14);
+    g.scale(1.2, 1.2);
     TT.drawHead(g, expr, G.t, G.coach.red);
     g.restore();
     g.strokeStyle = '#ba1f1f'; g.lineWidth = 3;

@@ -19,7 +19,7 @@
   TT.COACH_HITBOX = { halfW: 19, top: 112, bottom: 2 };
 
   /* ---------- head (origin = head centre) ---------- */
-  function drawHead(g, expr, t, red) {
+  function drawHead(g, expr, t, red, facing) {
     var skin = TT.mix(SKIN, '#e0604e', red);
     var skinDark = TT.mix('#d9a07e', '#b8463a', red);
 
@@ -56,6 +56,36 @@
     for (var i = -2; i <= 2; i++) {
       g.beginPath(); g.moveTo(i * 4.5, -20.5); g.quadraticCurveTo(i * 5.5 + 2, -17, i * 5.2 + 1, -14.5); g.stroke();
     }
+
+    // black Nebraska coach's cap
+    g.fillStyle = 'rgba(0,0,0,0.22)';
+    ellipse(g, 0, -9.5, 15, 2.6); g.fill();
+    var cg = g.createLinearGradient(-18, 0, 18, 0);
+    cg.addColorStop(0, '#0b0b0d'); cg.addColorStop(0.45, '#26262b'); cg.addColorStop(1, '#09090a');
+    g.fillStyle = cg;
+    g.beginPath();
+    g.moveTo(-17.8, -12.5);
+    g.bezierCurveTo(-19, -27.5, -9, -31.5, 0, -31.5);
+    g.bezierCurveTo(9, -31.5, 19, -27.5, 17.8, -12.5);
+    g.closePath();
+    g.fill();
+    g.strokeStyle = 'rgba(255,255,255,0.08)'; g.lineWidth = 0.8;
+    g.beginPath(); g.moveTo(-8, -13); g.quadraticCurveTo(-9, -26, -2, -31); g.stroke();
+    g.beginPath(); g.moveTo(8, -13); g.quadraticCurveTo(9, -26, 2, -31); g.stroke();
+    g.fillStyle = '#ba1f1f';
+    ellipse(g, 0, -31.2, 2.4, 1.3); g.fill();
+    g.save();
+    g.translate(0, -21);
+    if (facing < 0) g.scale(-1, 1);
+    TT.drawN(g, 0, 0, 13, '#ba1f1f', '#fff', 2.2);
+    g.restore();
+    // brim
+    g.fillStyle = '#060607';
+    ellipse(g, 0, -13.2, 20.5, 3.6); g.fill();
+    g.fillStyle = '#ba1f1f';
+    g.fillRect(-17.8, -14.6, 35.6, 1.1);
+    g.fillStyle = 'rgba(255,255,255,0.12)';
+    ellipse(g, 0, -15.2, 17, 1); g.fill();
 
     // brows
     g.strokeStyle = BROW; g.lineCap = 'round';
@@ -265,7 +295,7 @@
     // head
     g.save();
     g.translate(0, -92);
-    drawHead(g, expr, t, o.red);
+    drawHead(g, expr, t, o.red, o.facing);
     g.restore();
 
     // front arm + clipboard
